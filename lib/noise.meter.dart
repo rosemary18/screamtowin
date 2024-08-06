@@ -26,7 +26,7 @@ int calculateDecibels(List<int> audioData) {
 
   // Convert RMS to Decibels
   double referenceValue = 32768.0; // Maximum value for 16-bit PCM
-  double db = (20 * log10(rms / referenceValue)) + 77;
+  double db = (20 * log10(rms / referenceValue)) + 70;
 
   // Apply a floor limit for low decibel values to avoid extreme negative values
   return db.toInt();
