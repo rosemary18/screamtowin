@@ -206,7 +206,7 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                   onChange: (image) => setState(
                                       () => setting.headerImage = image)),
                               Input(
-                                label: "Tinggi Background Image",
+                                label: "Tinggi Header Image",
                                 controller: controllerHeaderImageHeight,
                                 margin:
                                     const EdgeInsets.only(top: 8, bottom: 12),
@@ -217,7 +217,7 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                 }),
                               ),
                               Input(
-                                label: "Lebar Background Image",
+                                label: "Lebar Header Image",
                                 controller: controllerHeaderImageWidth,
                                 margin:
                                     const EdgeInsets.only(top: 8, bottom: 12),
