@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -27,6 +28,7 @@ writeStorage({required String key, required String value}) async {
   return await storage.write(key: key, value: value);
 }
 
+// ignore: non_constant_identifier_names
 Future<String> saveImage(String source_path) async {
   String rpath = "";
   String t = Platform.isWindows ? "\\" : "/";
@@ -40,7 +42,7 @@ Future<String> saveImage(String source_path) async {
       rpath = dest.path;
     });
   } catch (e) {
-    print(e);
+    debugPrint(e.toString());
   }
 
   return rpath;

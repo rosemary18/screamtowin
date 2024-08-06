@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
-import 'package:screamtowin/assets/index.dart';
 import 'package:screamtowin/constant.dart';
 import 'package:screamtowin/models/setting.model.dart';
 import 'package:screamtowin/popup_setting.dart';
