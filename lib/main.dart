@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:window_manager/window_manager.dart';
 import 'noise.meter.view.dart';
-
-void main() => runApp(const MyApp());
-
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+  runApp(const MyApp());
+}
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 

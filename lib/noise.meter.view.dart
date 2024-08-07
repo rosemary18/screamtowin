@@ -10,6 +10,7 @@ import 'package:screamtowin/models/setting.model.dart';
 import 'package:screamtowin/popup_setting.dart';
 import 'package:screamtowin/utils.dart';
 import 'package:screamtowin/widgets/index.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'assets/images.dart';
 import 'noise.meter.dart';
@@ -30,6 +31,7 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
   int highScore = 0;
   bool win = false;
   Timer? timeId;
+  bool isFullscreen = false;
 
   @override
   void initState() {
@@ -172,18 +174,20 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                               textColor: const Color(0xFF0C3F72)),
                         ),
                         if (!win)
-                          SizedBox(
-                            height: setting.bottomImageHeight,
-                            width: setting.bottomImageWidth,
-                            child: setting.bottomImage.isNotEmpty
-                                ? Image.file(
-                                    File(setting.bottomImage),
-                                    fit: BoxFit.contain,
-                                  )
-                                : Image.asset(appImages["IMG_GLOBE"]!),
+                          ShakingWidget(
+                            child: SizedBox(
+                              height: setting.bottomImageHeight,
+                              width: setting.bottomImageWidth,
+                              child: setting.bottomImage.isNotEmpty
+                                  ? Image.file(
+                                      File(setting.bottomImage),
+                                      fit: BoxFit.contain,
+                                    )
+                                  : Image.asset(appImages["IMG_GLOBE"]!),
+                            )
                           ),
-                        if (win)
-                          SizedBox(
+                        if (win) ShakingWidget(
+                          child: SizedBox(
                             height: setting.bottomImageHeight,
                             width: setting.bottomImageWidth,
                             child: (highScore >= 80 &&
@@ -202,6 +206,7 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                                         ? "IMG_GLOBE_3"
                                         : "IMG_GLOBE_2"]!),
                           ),
+                        )
                       ],
                     ),
                   )),
@@ -230,9 +235,24 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
               Positioned(
                   bottom: 12,
                   right: 12,
-                  child: TouchableOpacity(
-                      onPress: () {},
-                      child: PopUp(
+                  child: Row(
+                    children: [
+                      TouchableOpacity(
+                        onPress: () async {
+                          windowManager.setFullScreen(isFullscreen ? false : true);
+                          isFullscreen = isFullscreen ? false : true;
+                          setState(() {});
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          child: Icon(
+                            isFullscreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                            color: const Color.fromARGB(162, 255, 255, 255),
+                            size: 26,
+                          )
+                        ),
+                      ),
+                      PopUp(
                         tag: 'setting',
                         padding: const EdgeInsets.all(0),
                         popUp: PopUpItem(
@@ -252,7 +272,10 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                           color: Color.fromARGB(162, 255, 255, 255),
                           size: 24,
                         ),
-                      )))
+                      )
+                    ]
+                  )
+              )
             ],
           ),
         ),
