@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:screamtowin/constant.dart';
 import 'package:screamtowin/models/setting.model.dart';
 import 'package:screamtowin/utils.dart';
