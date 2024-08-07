@@ -15,7 +15,6 @@ import 'package:screamtowin/utils.dart';
 import 'package:screamtowin/widgets/index.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'assets/images.dart';
 import 'noise.meter.dart';
 import 'widgets/popup/pop_up.dart';
 

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Scream To Win"
-#define MyAppVersion "1.1"
+#define MyAppVersion "1.2"
 #define MyAppPublisher "Central Event, Org"
 #define MyAppURL "https://www.central-events.com/"
 #define MyAppExeName "screamtowin.exe"
@@ -24,7 +24,7 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 OutputDir=C:\Users\rizki\OneDrive\Desktop\screamtowin\installers\exe
-OutputBaseFilename=screamtowin-setup-v1.1
+OutputBaseFilename=screamtowin-setup-v1.2
 SetupIconFile=C:\Users\rizki\OneDrive\Desktop\screamtowin\windows\runner\resources\app_icon.ico
 Compression=lzma
 SolidCompression=yes
