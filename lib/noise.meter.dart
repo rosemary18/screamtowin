@@ -4,7 +4,7 @@ double log10(double x) {
   return log(x) / ln10;
 }
 
-int calculateDecibels(List<int> audioData) {
+int calculateDecibels(List<int> audioData, {double sensitivity = 70.0}) {
   // Convert List<int> to Int16List (assuming little-endian format)
   final int16List = <int>[];
   for (int i = 0; i < audioData.length; i += 2) {
@@ -26,13 +26,20 @@ int calculateDecibels(List<int> audioData) {
 
   // Convert RMS to Decibels
   double referenceValue = 32768.0; // Maximum value for 16-bit PCM
-  double db = (20 * log10(rms / referenceValue)) + 70;
+  double db = (20 * log10(rms / referenceValue)) + sensitivity;
 
   // Apply a floor limit for low decibel values to avoid extreme negative values
   return db.toInt();
 }
 
 int calculateScore(int decibel) {
-  double score = (max((decibel - 30), 0) / (70 / 100));
+  int deduction = (decibel < 30
+      ? 42
+      : decibel < 40
+          ? 38
+          : decibel < 50
+              ? 34
+              : 30);
+  double score = (max((decibel - deduction), 0) / (70 / 100));
   return max(0, min(100, score.toInt()));
 }

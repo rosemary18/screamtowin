@@ -16,6 +16,7 @@ class SettingModel {
   double headerSubTextFontSize;
   String bottomImage;
   String bottomImageWin;
+  String bottomImageLose;
   double bottomImageHeight;
   double bottomImageWidth;
   String footerImage;
@@ -23,6 +24,8 @@ class SettingModel {
   double footerImageHeight;
   Color scoreColor;
   double scoreFontSize;
+  double sensitivity;
+  int duration;
 
   SettingModel({
     this.backgroundColor = const Color(0xFFC4D23F),
@@ -39,6 +42,7 @@ class SettingModel {
     this.headerSubTextFontSize = 52,
     this.bottomImage = "",
     this.bottomImageWin = "",
+    this.bottomImageLose = "",
     this.bottomImageHeight = 540,
     this.bottomImageWidth = 540,
     this.footerImage = "",
@@ -46,6 +50,8 @@ class SettingModel {
     this.footerImageWidth = 450,
     this.scoreColor = const Color(0xFF0C3F72),
     this.scoreFontSize = 120,
+    this.sensitivity = 75.0,
+    this.duration = 8,
   });
 
   factory SettingModel.fromJson(Map<String, dynamic> json) {
@@ -73,6 +79,7 @@ class SettingModel {
       headerSubTextFontSize: json['headerSubTextFontSize'],
       bottomImage: json['bottomImage'],
       bottomImageWin: json['bottomImageWin'],
+      bottomImageLose: json['bottomImageLose'] ?? "",
       bottomImageHeight: json['bottomImageHeight'],
       bottomImageWidth: json['bottomImageWidth'],
       footerImage: json['footerImage'],
@@ -82,6 +89,8 @@ class SettingModel {
           int.parse(json['scoreColor'].toString().substring(1), radix: 16) +
               0xFF000000),
       scoreFontSize: json['scoreFontSize'],
+      sensitivity: json['sensitivity'] ?? 75.0,
+      duration: json['duration'] ?? 8,
     );
   }
 
@@ -101,6 +110,7 @@ class SettingModel {
       'headerSubTextFontSize': headerSubTextFontSize,
       'bottomImage': bottomImage,
       'bottomImageWin': bottomImageWin,
+      'bottomImageLose': bottomImageLose,
       'bottomImageHeight': bottomImageHeight,
       'bottomImageWidth': bottomImageWidth,
       'footerImage': footerImage,
@@ -108,6 +118,8 @@ class SettingModel {
       'footerImageWidth': footerImageWidth,
       'scoreColor': '#${scoreColor.value.toRadixString(16)}',
       'scoreFontSize': scoreFontSize,
+      'sensitivity': sensitivity,
+      'duration': duration,
     };
   }
 }

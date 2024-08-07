@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -10,6 +11,7 @@ import 'package:screamtowin/popup_setting.dart';
 import 'package:screamtowin/utils.dart';
 import 'package:screamtowin/widgets/index.dart';
 
+import 'assets/images.dart';
 import 'noise.meter.dart';
 import 'widgets/popup/pop_up.dart';
 
@@ -25,7 +27,9 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
   Stream<Uint8List>? audioStream;
   SettingModel setting = SettingModel();
   int decibel = 0;
+  int highScore = 0;
   bool win = false;
+  Timer? timeId;
 
   @override
   void initState() {
@@ -58,13 +62,21 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
       audioStream = await record
           .startStream(const RecordConfig(encoder: AudioEncoder.pcm16bits));
       audioStream!.listen((data) {
-        decibel = calculateDecibels(data);
-        if (calculateScore(decibel) == 100) {
+        decibel = calculateDecibels(data, sensitivity: setting.sensitivity);
+        var score = calculateScore(decibel);
+        if (score > highScore) highScore = score;
+        setState(() {});
+      });
+
+      // Set timer
+      timeId = Timer(Duration(seconds: setting.duration), () {
+        setState(() {
           record.stop();
           audioStream = null;
           win = true;
-        }
-        setState(() {});
+          timeId?.cancel();
+          timeId = null;
+        });
       });
     }
   }
@@ -79,7 +91,12 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
         onPress: () {
           if (win) {
             win = false;
+            highScore = 0;
           } else {
+            setState(() {
+              timeId?.cancel();
+              timeId = null;
+            });
             if (audioStream != null) {
               record.stop();
               audioStream = null;
@@ -95,34 +112,34 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
           color: setting.backgroundColor,
           child: Stack(
             children: [
-              if (setting.backgroundImage.isNotEmpty)
-                SizedBox(
-                  height: double.infinity,
-                  width: double.infinity,
-                  // child: Image.asset(appImages["IMG_BACKGROUND"]!),
-                  child: Image.file(File(setting.backgroundImage),
-                      fit: BoxFit.cover),
-                ),
+              SizedBox(
+                height: double.infinity,
+                width: double.infinity,
+                child: setting.backgroundImage.isNotEmpty
+                    ? Image.file(File(setting.backgroundImage),
+                        fit: BoxFit.cover)
+                    : Image.asset(appImages["IMG_BACKGROUND"]!),
+              ),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (setting.headerImage.isNotEmpty)
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Stack(
-                          children: [
-                            SizedBox(
-                              height: setting.headerImageHeight,
-                              width: setting.headerImageWidth,
-                              // child: Image.asset(appImages["IMG_HEADER"]!),
-                              child: Image.file(File(setting.headerImage),
-                                  fit: BoxFit.contain),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Stack(
+                        children: [
+                          SizedBox(
+                            height: setting.headerImageHeight,
+                            width: setting.headerImageWidth,
+                            child: setting.headerImage.isNotEmpty
+                                ? Image.file(File(setting.headerImage),
+                                    fit: BoxFit.contain)
+                                : Image.asset(appImages["IMG_HEADER"]!),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                   Expanded(
                       child: Center(
                     child: Column(
@@ -147,57 +164,67 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                           child: OutlinedText(
                               text: (audioStream == null && !win)
                                   ? "-"
-                                  : "${calculateScore(decibel)}",
+                                  : win
+                                      ? "$highScore"
+                                      : "${calculateScore(decibel)}",
                               fontSize: 120,
                               outlineColor: Colors.white,
                               textColor: const Color(0xFF0C3F72)),
                         ),
-                        if (!win && setting.bottomImage.isNotEmpty)
+                        if (!win)
                           SizedBox(
                             height: setting.bottomImageHeight,
                             width: setting.bottomImageWidth,
-                            child: Image.file(
-                              File(setting.bottomImage),
-                              fit: BoxFit.contain,
-                            ),
+                            child: setting.bottomImage.isNotEmpty
+                                ? Image.file(
+                                    File(setting.bottomImage),
+                                    fit: BoxFit.contain,
+                                  )
+                                : Image.asset(appImages["IMG_GLOBE"]!),
                           ),
-                        if (win && setting.bottomImageWin.isNotEmpty)
+                        if (win)
                           SizedBox(
                             height: setting.bottomImageHeight,
                             width: setting.bottomImageWidth,
-                            child: Image.file(
-                              File(setting.bottomImageWin),
-                              fit: BoxFit.contain,
-                            ),
+                            child: (highScore >= 80 &&
+                                    setting.bottomImageWin.isNotEmpty)
+                                ? Image.file(
+                                    File(setting.bottomImageWin),
+                                    fit: BoxFit.contain,
+                                  )
+                                : (highScore < 80 &&
+                                        setting.bottomImageLose.isNotEmpty)
+                                    ? Image.file(
+                                        File(setting.bottomImageLose),
+                                        fit: BoxFit.contain,
+                                      )
+                                    : Image.asset(appImages[highScore < 80
+                                        ? "IMG_GLOBE_3"
+                                        : "IMG_GLOBE_2"]!),
                           ),
-                        // SizedBox(
-                        //   height: setting.bottomImageHeight,
-                        //   width: setting.bottomImageWidth,
-                        //   child: Image.asset(appImages[win ? "IMG_GLOBE_2" : "IMG_GLOBE"]!),
-                        // ),
                       ],
                     ),
                   )),
-                  if (setting.footerImage.isNotEmpty)
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 24, top: 8),
-                              height: setting.footerImageHeight,
-                              width: setting.footerImageWidth,
-                              // child: Image.asset(appImages["IMG_FOOTER"]!),
-                              child: Image.file(
-                                File(setting.footerImage),
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 24, top: 8),
+                            height: setting.footerImageHeight,
+                            width: setting.footerImageWidth,
+                            child: setting.footerImage.isNotEmpty
+                                ? Image.file(
+                                    File(setting.footerImage),
+                                    fit: BoxFit.contain,
+                                  )
+                                : Image.asset(appImages["IMG_FOOTER"]!),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
               ),
               Positioned(
@@ -222,7 +249,7 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                         ),
                         child: const Icon(
                           Icons.settings,
-                          color: Color.fromARGB(135, 255, 255, 255),
+                          color: Color.fromARGB(162, 255, 255, 255),
                           size: 24,
                         ),
                       )))

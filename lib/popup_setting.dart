@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:screamtowin/constant.dart';
 import 'package:screamtowin/models/setting.model.dart';
 import 'package:screamtowin/utils.dart';
@@ -23,6 +24,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
   SettingModel settingOld = SettingModel();
   SettingModel setting = SettingModel();
 
+  TextEditingController controllerSensitivity = TextEditingController();
+  TextEditingController controllerDuration = TextEditingController();
   TextEditingController controllerHeaderText = TextEditingController();
   TextEditingController controllerHeaderTextWin = TextEditingController();
   TextEditingController controllerHeaderSubText = TextEditingController();
@@ -48,6 +51,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
           } else {
             writeStorage(key: "setting", value: jsonEncode(setting.toJson()));
           }
+          controllerSensitivity.text = setting.sensitivity.toString();
+          controllerDuration.text = setting.duration.toString();
           controllerHeaderText.text = setting.headerText;
           controllerHeaderTextWin.text = setting.headerTextWin;
           controllerHeaderSubText.text = setting.headerSubText;
@@ -130,6 +135,26 @@ class _PopUpSettingState extends State<PopUpSetting> {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Input(
+                              label: "Sensitivitas Suara",
+                              controller: controllerSensitivity,
+                              margin: const EdgeInsets.only(top: 8, bottom: 12),
+                              width: 200,
+                              onChanged: (value) => setState(() {
+                                setting.sensitivity = double.parse(
+                                    value.isNotEmpty ? value : "0");
+                              }),
+                            ),
+                            Input(
+                              label: "Durasi Mendengarkan Suara (detik)",
+                              controller: controllerDuration,
+                              margin: const EdgeInsets.only(top: 8, bottom: 12),
+                              width: 200,
+                              onChanged: (value) => setState(() {
+                                setting.duration =
+                                    int.parse(value.isNotEmpty ? value : "0");
+                              }),
+                            ),
                             const Text("Warna Background ",
                                 style: TextStyle(
                                   color: Colors.white,
@@ -158,7 +183,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
                               margin: const EdgeInsets.only(top: 8, bottom: 12),
                               width: 200,
                               onChanged: (value) => setState(() {
-                                setting.scoreFontSize = double.parse(value);
+                                setting.scoreFontSize = double.parse(
+                                    value.isNotEmpty ? value : "0");
                               }),
                             ),
                             const Text("Warna Text Skor",
@@ -212,8 +238,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                     const EdgeInsets.only(top: 8, bottom: 12),
                                 width: 200,
                                 onChanged: (value) => setState(() {
-                                  setting.headerImageHeight =
-                                      double.parse(value);
+                                  setting.headerImageHeight = double.parse(
+                                      value.isNotEmpty ? value : "0");
                                 }),
                               ),
                               Input(
@@ -223,8 +249,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                     const EdgeInsets.only(top: 8, bottom: 12),
                                 width: 200,
                                 onChanged: (value) => setState(() {
-                                  setting.headerImageWidth =
-                                      double.parse(value);
+                                  setting.headerImageWidth = double.parse(
+                                      value.isNotEmpty ? value : "0");
                                 }),
                               ),
                               Input(
@@ -264,8 +290,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                     const EdgeInsets.only(top: 8, bottom: 12),
                                 width: 200,
                                 onChanged: (value) => setState(() {
-                                  setting.headerTextFontSize =
-                                      double.parse(value);
+                                  setting.headerTextFontSize = double.parse(
+                                      value.isNotEmpty ? value : "0");
                                 }),
                               ),
                               Input(
@@ -275,8 +301,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                     const EdgeInsets.only(top: 8, bottom: 12),
                                 width: 200,
                                 onChanged: (value) => setState(() {
-                                  setting.headerSubTextFontSize =
-                                      double.parse(value);
+                                  setting.headerSubTextFontSize = double.parse(
+                                      value.isNotEmpty ? value : "0");
                                 }),
                               ),
                               const Text("Warna Text Header ",
@@ -355,8 +381,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                     const EdgeInsets.only(top: 8, bottom: 12),
                                 width: 200,
                                 onChanged: (value) => setState(() {
-                                  setting.bottomImageHeight =
-                                      double.parse(value);
+                                  setting.bottomImageHeight = double.parse(
+                                      value.isNotEmpty ? value : "0");
                                 }),
                               ),
                               Input(
@@ -366,8 +392,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                     const EdgeInsets.only(top: 8, bottom: 12),
                                 width: 200,
                                 onChanged: (value) => setState(() {
-                                  setting.bottomImageWidth =
-                                      double.parse(value);
+                                  setting.bottomImageWidth = double.parse(
+                                      value.isNotEmpty ? value : "0");
                                 }),
                               ),
                             ],
@@ -413,8 +439,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                     const EdgeInsets.only(top: 8, bottom: 12),
                                 width: 200,
                                 onChanged: (value) => setState(() {
-                                  setting.footerImageHeight =
-                                      double.parse(value);
+                                  setting.footerImageHeight = double.parse(
+                                      value.isNotEmpty ? value : "0");
                                 }),
                               ),
                               Input(
@@ -424,8 +450,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                     const EdgeInsets.only(top: 8, bottom: 12),
                                 width: 200,
                                 onChanged: (value) => setState(() {
-                                  setting.footerImageWidth =
-                                      double.parse(value);
+                                  setting.footerImageWidth = double.parse(
+                                      value.isNotEmpty ? value : "0");
                                 }),
                               ),
                             ],
