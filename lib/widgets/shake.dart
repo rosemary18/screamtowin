@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ShakingWidget extends StatefulWidget {
-
   final Widget child;
   const ShakingWidget({super.key, required this.child});
 
@@ -9,14 +8,15 @@ class ShakingWidget extends StatefulWidget {
   State<ShakingWidget> createState() => _ShakingWidgetState();
 }
 
-class _ShakingWidgetState extends State<ShakingWidget> with SingleTickerProviderStateMixin {
+class _ShakingWidgetState extends State<ShakingWidget>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    
+
     // Inisialisasi AnimationController
     _controller = AnimationController(
       duration: const Duration(seconds: 1),
@@ -35,7 +35,7 @@ class _ShakingWidgetState extends State<ShakingWidget> with SingleTickerProvider
       animation: _animation,
       builder: (context, child) {
         return Transform.translate(
-          offset: Offset(_animation.value, 0),
+          offset: Offset(_animation.value, -_animation.value),
           child: child,
         );
       },

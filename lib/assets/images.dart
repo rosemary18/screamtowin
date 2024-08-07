@@ -9,4 +9,5 @@ Map<String, String> appImages = {
   "IMG_GLOBE_3": "$basePathImages/img-globe-3.png",
   "IMG_LOGO_SIDARLING": "$basePathImages/img-logo-siap-darling.png",
   "IMG_LOGO_DJARUM": "$basePathImages/img-logo-djarum-foundation.png",
+  "IMG_CONFETTI": "$basePathImages/img-confetti.gif",
 };

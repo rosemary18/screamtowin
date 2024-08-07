@@ -51,7 +51,8 @@ class _PickerImageState extends State<PickerImage> {
 
   void handlerSelectFile() async {
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
+        type: FileType.custom,
+        allowedExtensions: ['png', 'jpg', 'jpeg', 'gif']);
     if (result != null) {
       setState(() {
         _path = result.files.first.path!;
