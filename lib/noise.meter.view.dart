@@ -104,6 +104,7 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
           if (win) {
             win = false;
             highScore = 0;
+            decibel = 0;
             _controllerTopCenter.stop();
             await player.stop();
           } else {
@@ -179,20 +180,19 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                             fontSize: 52,
                             outlineColor: Colors.white,
                             textColor: primaryGreen),
-                        if (!setting.useBarImage)
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 40),
-                            child: OutlinedText(
-                                text: (audioStream == null && !win)
-                                    ? "-"
-                                    : win
-                                        ? "$highScore"
-                                        : "${calculateScore(decibel)}",
-                                fontSize: 120,
-                                outlineColor: Colors.white,
-                                textColor: const Color(0xFF0C3F72)),
-                          ),
-                        if (setting.useBarImage && (audioStream != null || win))
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 40),
+                          child: OutlinedText(
+                              text: (audioStream == null && !win)
+                                  ? "-"
+                                  : win
+                                      ? "$highScore"
+                                      : "${calculateScore(decibel)}",
+                              fontSize: 120,
+                              outlineColor: Colors.white,
+                              textColor: const Color(0xFF0C3F72)),
+                        ),
+                        if (setting.useBarImage)
                           ShakingWidget(
                               child: Container(
                             margin: const EdgeInsets.only(top: 60),
@@ -207,8 +207,8 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                                 ),
                                 Opacity(
                                   opacity: (win
-                                          ? (highScore >= 20)
-                                          : (calculateScore(decibel) >= 20))
+                                          ? (highScore >= 10)
+                                          : (calculateScore(decibel) >= 10))
                                       ? 1
                                       : 0,
                                   child: Image.file(File(setting.barImage20),
@@ -216,7 +216,7 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                                 ),
                                 Opacity(
                                   opacity: (win
-                                          ? (highScore >= 40)
+                                          ? (highScore >= 30)
                                           : (calculateScore(decibel) >= 40))
                                       ? 1
                                       : 0,
@@ -225,7 +225,7 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                                 ),
                                 Opacity(
                                   opacity: (win
-                                          ? (highScore >= 60)
+                                          ? (highScore >= 50)
                                           : (calculateScore(decibel) >= 60))
                                       ? 1
                                       : 0,
@@ -234,7 +234,7 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                                 ),
                                 Opacity(
                                   opacity: (win
-                                          ? (highScore >= 80)
+                                          ? (highScore >= 70)
                                           : (calculateScore(decibel) >= 80))
                                       ? 1
                                       : 0,
@@ -243,7 +243,7 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                                 ),
                                 Opacity(
                                   opacity: (win
-                                          ? (highScore >= 95)
+                                          ? (highScore >= 90)
                                           : (calculateScore(decibel) >= 95))
                                       ? 1
                                       : 0,
