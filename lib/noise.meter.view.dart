@@ -126,34 +126,40 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
           color: setting.backgroundColor,
           child: Stack(
             children: [
-              SizedBox(
-                height: double.infinity,
-                width: double.infinity,
-                child: setting.backgroundImage.isNotEmpty
-                    ? Image.file(File(setting.backgroundImage),
+              if (setting.backgroundImage.isNotEmpty)
+                SizedBox(
+                    height: double.infinity,
+                    width: double.infinity,
+                    child: Image.file(File(setting.backgroundImage),
                         fit: BoxFit.cover)
-                    : Image.asset(appImages["IMG_BACKGROUND"]!),
-              ),
+                    // child: setting.backgroundImage.isNotEmpty
+                    //     ? Image.file(File(setting.backgroundImage),
+                    //         fit: BoxFit.cover)
+                    //     : Image.asset(appImages["IMG_BACKGROUND"]!),
+                    ),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Stack(
-                        children: [
-                          SizedBox(
-                            height: setting.headerImageHeight,
-                            width: setting.headerImageWidth,
-                            child: setting.headerImage.isNotEmpty
-                                ? Image.file(File(setting.headerImage),
+                  if (setting.headerImage.isNotEmpty)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Stack(
+                          children: [
+                            SizedBox(
+                                height: setting.headerImageHeight,
+                                width: setting.headerImageWidth,
+                                child: Image.file(File(setting.headerImage),
                                     fit: BoxFit.contain)
-                                : Image.asset(appImages["IMG_HEADER"]!),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                                // child: setting.headerImage.isNotEmpty
+                                //     ? Image.file(File(setting.headerImage),
+                                //         fit: BoxFit.contain)
+                                //     : Image.asset(appImages["IMG_HEADER"]!),
+                                ),
+                          ],
+                        ),
+                      ],
+                    ),
                   Expanded(
                       child: Center(
                     child: Column(
@@ -173,19 +179,83 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                             fontSize: 52,
                             outlineColor: Colors.white,
                             textColor: primaryGreen),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 40),
-                          child: OutlinedText(
-                              text: (audioStream == null && !win)
-                                  ? "-"
-                                  : win
-                                      ? "$highScore"
-                                      : "${calculateScore(decibel)}",
-                              fontSize: 120,
-                              outlineColor: Colors.white,
-                              textColor: const Color(0xFF0C3F72)),
-                        ),
-                        if (!win)
+                        if (!setting.useBarImage)
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 40),
+                            child: OutlinedText(
+                                text: (audioStream == null && !win)
+                                    ? "-"
+                                    : win
+                                        ? "$highScore"
+                                        : "${calculateScore(decibel)}",
+                                fontSize: 120,
+                                outlineColor: Colors.white,
+                                textColor: const Color(0xFF0C3F72)),
+                          ),
+                        if (setting.useBarImage && (audioStream != null || win))
+                          ShakingWidget(
+                              child: Container(
+                            margin: const EdgeInsets.only(top: 60),
+                            height: setting.barImageHeight,
+                            width: setting.barImageWidth,
+                            child: Stack(
+                              children: [
+                                Opacity(
+                                  opacity: .3,
+                                  child: Image.file(File(setting.barImage100),
+                                      fit: BoxFit.contain),
+                                ),
+                                Opacity(
+                                  opacity: (win
+                                          ? (highScore >= 20)
+                                          : (calculateScore(decibel) >= 20))
+                                      ? 1
+                                      : 0,
+                                  child: Image.file(File(setting.barImage20),
+                                      fit: BoxFit.contain),
+                                ),
+                                Opacity(
+                                  opacity: (win
+                                          ? (highScore >= 40)
+                                          : (calculateScore(decibel) >= 40))
+                                      ? 1
+                                      : 0,
+                                  child: Image.file(File(setting.barImage40),
+                                      fit: BoxFit.contain),
+                                ),
+                                Opacity(
+                                  opacity: (win
+                                          ? (highScore >= 60)
+                                          : (calculateScore(decibel) >= 60))
+                                      ? 1
+                                      : 0,
+                                  child: Image.file(File(setting.barImage60),
+                                      fit: BoxFit.contain),
+                                ),
+                                Opacity(
+                                  opacity: (win
+                                          ? (highScore >= 80)
+                                          : (calculateScore(decibel) >= 80))
+                                      ? 1
+                                      : 0,
+                                  child: Image.file(File(setting.barImage80),
+                                      fit: BoxFit.contain),
+                                ),
+                                Opacity(
+                                  opacity: (win
+                                          ? (highScore >= 95)
+                                          : (calculateScore(decibel) >= 95))
+                                      ? 1
+                                      : 0,
+                                  child: Image.file(File(setting.barImage100),
+                                      fit: BoxFit.contain),
+                                ),
+                              ],
+                            ),
+                          )),
+                        if (!win &&
+                            !setting.useBarImage &&
+                            setting.bottomImage.isNotEmpty)
                           ShakingWidget(
                               child: SizedBox(
                             height: setting.bottomImageHeight,
@@ -197,7 +267,9 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                                   )
                                 : Image.asset(appImages["IMG_GLOBE"]!),
                           )),
-                        if (win)
+                        if (win &&
+                            !setting.useBarImage &&
+                            setting.bottomImageWin.isNotEmpty)
                           ShakingWidget(
                             child: SizedBox(
                               height: setting.bottomImageHeight,
@@ -222,26 +294,31 @@ class _NoiseMeterViewState extends State<NoiseMeterView> {
                       ],
                     ),
                   )),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 24, top: 8),
-                            height: setting.footerImageHeight,
-                            width: setting.footerImageWidth,
-                            child: setting.footerImage.isNotEmpty
-                                ? Image.file(
-                                    File(setting.footerImage),
-                                    fit: BoxFit.contain,
-                                  )
-                                : Image.asset(appImages["IMG_FOOTER"]!),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  if (setting.footerImage.isNotEmpty)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 24, top: 8),
+                              height: setting.footerImageHeight,
+                              width: setting.footerImageWidth,
+                              child: Image.file(
+                                File(setting.footerImage),
+                                fit: BoxFit.contain,
+                              ),
+                              // child: setting.footerImage.isNotEmpty
+                              //     ? Image.file(
+                              //         File(setting.footerImage),
+                              //         fit: BoxFit.contain,
+                              //       )
+                              //     : Image.asset(appImages["IMG_FOOTER"]!),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                 ],
               ),
               Positioned(

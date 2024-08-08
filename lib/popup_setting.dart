@@ -38,6 +38,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
   TextEditingController controllerFooterImageHeight = TextEditingController();
   TextEditingController controllerFooterImageWidth = TextEditingController();
   TextEditingController controllerScoreFontSize = TextEditingController();
+  TextEditingController controllerBarImageHeight = TextEditingController();
+  TextEditingController controllerBarImageWidth = TextEditingController();
 
   @override
   void initState() {
@@ -69,6 +71,8 @@ class _PopUpSettingState extends State<PopUpSetting> {
               setting.footerImageHeight.toString();
           controllerFooterImageWidth.text = setting.footerImageWidth.toString();
           controllerScoreFontSize.text = setting.scoreFontSize.toString();
+          controllerBarImageHeight.text = setting.barImageHeight.toString();
+          controllerBarImageWidth.text = setting.barImageWidth.toString();
           setState(() {});
         });
   }
@@ -88,6 +92,22 @@ class _PopUpSettingState extends State<PopUpSetting> {
 
     if (setting.footerImage != settingOld.footerImage) {
       setting.footerImage = await saveImage(setting.footerImage);
+    }
+
+    if (setting.barImage20 != settingOld.barImage20) {
+      setting.barImage20 = await saveImage(setting.barImage20);
+    }
+    if (setting.barImage40 != settingOld.barImage40) {
+      setting.barImage40 = await saveImage(setting.barImage40);
+    }
+    if (setting.barImage60 != settingOld.barImage60) {
+      setting.barImage60 = await saveImage(setting.barImage60);
+    }
+    if (setting.barImage80 != settingOld.barImage80) {
+      setting.barImage80 = await saveImage(setting.barImage80);
+    }
+    if (setting.barImage100 != settingOld.barImage100) {
+      setting.barImage100 = await saveImage(setting.barImage100);
     }
 
     await writeStorage(key: "setting", value: jsonEncode(setting.toJson()));
@@ -351,7 +371,171 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                       color: Colors.white,
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold)),
-                              const Text("Bottom Image",
+                              Container(
+                                margin:
+                                    const EdgeInsets.only(top: 8, bottom: 12),
+                                child: Row(
+                                  children: [
+                                    const Expanded(
+                                      child: Text("Gunakan Gambar Bar",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                          )),
+                                    ),
+                                    Switch(
+                                      value: setting.useBarImage,
+                                      onChanged: (v) {
+                                        setting.useBarImage = v;
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (setting.useBarImage)
+                                Input(
+                                  label: "Tinggi Gambar Bar",
+                                  controller: controllerBarImageHeight,
+                                  margin:
+                                      const EdgeInsets.only(top: 8, bottom: 6),
+                                  width: 200,
+                                  onChanged: (value) => setState(() {
+                                    setting.barImageHeight = double.parse(
+                                        value.isNotEmpty ? value : "0");
+                                  }),
+                                ),
+                              if (setting.useBarImage)
+                                Input(
+                                  label: "Lebar Gambar Bar",
+                                  controller: controllerBarImageHeight,
+                                  margin:
+                                      const EdgeInsets.only(top: 8, bottom: 20),
+                                  width: 200,
+                                  onChanged: (value) => setState(() {
+                                    setting.barImageWidth = double.parse(
+                                        value.isNotEmpty ? value : "0");
+                                  }),
+                                ),
+                              if (setting.useBarImage)
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 12),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 12),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text("Gambar Bar 20%",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                )),
+                                            PickerImage(
+                                                margin: const EdgeInsets.only(
+                                                    top: 8, bottom: 12),
+                                                path: setting.barImage20,
+                                                onChange: (image) => setState(
+                                                    () => setting.barImage20 =
+                                                        image)),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 12),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text("Gambar Bar 40%",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                )),
+                                            PickerImage(
+                                                margin: const EdgeInsets.only(
+                                                    top: 8, bottom: 12),
+                                                path: setting.barImage40,
+                                                onChange: (image) => setState(
+                                                    () => setting.barImage40 =
+                                                        image)),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 12),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text("Gambar Bar 60%",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                )),
+                                            PickerImage(
+                                                margin: const EdgeInsets.only(
+                                                    top: 8, bottom: 12),
+                                                path: setting.barImage60,
+                                                onChange: (image) => setState(
+                                                    () => setting.barImage60 =
+                                                        image)),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 12),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text("Gambar Bar 80%",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                )),
+                                            PickerImage(
+                                                margin: const EdgeInsets.only(
+                                                    top: 8, bottom: 12),
+                                                path: setting.barImage80,
+                                                onChange: (image) => setState(
+                                                    () => setting.barImage80 =
+                                                        image)),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 12),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text("Gambar Bar 100%",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                )),
+                                            PickerImage(
+                                                margin: const EdgeInsets.only(
+                                                    top: 8, bottom: 12),
+                                                path: setting.barImage100,
+                                                onChange: (image) => setState(
+                                                    () => setting.barImage100 =
+                                                        image)),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              const Text("Gambar Bawah",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 10,
@@ -362,7 +546,7 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                   path: setting.bottomImage,
                                   onChange: (image) => setState(
                                       () => setting.bottomImage = image)),
-                              const Text("Bottom Image Win",
+                              const Text("Gambar Bawah Win",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 10,
@@ -374,7 +558,7 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                   onChange: (image) => setState(
                                       () => setting.bottomImageWin = image)),
                               Input(
-                                label: "Tinggi Bottom Image",
+                                label: "Tinggi Gambar Bawah",
                                 controller: controllerBottomImageHeight,
                                 margin:
                                     const EdgeInsets.only(top: 8, bottom: 12),
@@ -385,7 +569,7 @@ class _PopUpSettingState extends State<PopUpSetting> {
                                 }),
                               ),
                               Input(
-                                label: "Lebar Bottom Image",
+                                label: "Lebar Gambar Bawah",
                                 controller: controllerBottomImageWidth,
                                 margin:
                                     const EdgeInsets.only(top: 8, bottom: 12),

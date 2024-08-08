@@ -27,6 +27,15 @@ class SettingModel {
   double sensitivity;
   int duration;
 
+  bool useBarImage;
+  String barImage20;
+  String barImage40;
+  String barImage60;
+  String barImage80;
+  String barImage100;
+  double barImageHeight;
+  double barImageWidth;
+
   SettingModel({
     this.backgroundColor = const Color(0xFFC4D23F),
     this.backgroundImage = "",
@@ -52,6 +61,14 @@ class SettingModel {
     this.scoreFontSize = 120,
     this.sensitivity = 75.0,
     this.duration = 8,
+    this.useBarImage = false,
+    this.barImage20 = "",
+    this.barImage40 = "",
+    this.barImage60 = "",
+    this.barImage80 = "",
+    this.barImage100 = "",
+    this.barImageHeight = 300,
+    this.barImageWidth = 300,
   });
 
   factory SettingModel.fromJson(Map<String, dynamic> json) {
@@ -91,6 +108,14 @@ class SettingModel {
       scoreFontSize: json['scoreFontSize'],
       sensitivity: json['sensitivity'] ?? 75.0,
       duration: json['duration'] ?? 8,
+      useBarImage: json['useBarImage'] ?? false,
+      barImage20: json['barImage20'] ?? "",
+      barImage40: json['barImage40'] ?? "",
+      barImage60: json['barImage60'] ?? "",
+      barImage80: json['barImage80'] ?? "",
+      barImage100: json['barImage100'] ?? "",
+      barImageHeight: json['barImageHeight'] ?? 300,
+      barImageWidth: json['barImageWidth'] ?? 300,
     );
   }
 
@@ -120,6 +145,14 @@ class SettingModel {
       'scoreFontSize': scoreFontSize,
       'sensitivity': sensitivity,
       'duration': duration,
+      'useBarImage': useBarImage,
+      'barImage20': barImage20,
+      'barImage40': barImage40,
+      'barImage60': barImage60,
+      'barImage80': barImage80,
+      'barImage100': barImage100,
+      'barImageHeight': barImageHeight,
+      'barImageWidth': barImageWidth,
     };
   }
 }

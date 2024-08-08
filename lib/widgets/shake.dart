@@ -35,7 +35,7 @@ class _ShakingWidgetState extends State<ShakingWidget>
       animation: _animation,
       builder: (context, child) {
         return Transform.translate(
-          offset: Offset(_animation.value, -_animation.value),
+          offset: Offset(_animation.value, 0),
           child: child,
         );
       },
