@@ -24,7 +24,7 @@ DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 OutputDir=C:\Users\rizki\OneDrive\Desktop\screamtowin\installers\exe
-OutputBaseFilename=screamtowin-setup-v1.2
+OutputBaseFilename=screamtowin-setup-v1.2.1
 SetupIconFile=C:\Users\rizki\OneDrive\Desktop\screamtowin\windows\runner\resources\app_icon.ico
 Compression=lzma
 SolidCompression=yes
@@ -41,6 +41,9 @@ Source: "C:\Users\rizki\OneDrive\Desktop\screamtowin\build\windows\x64\runner\Re
 Source: "C:\Users\rizki\OneDrive\Desktop\screamtowin\build\windows\x64\runner\Release\flutter_secure_storage_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\rizki\OneDrive\Desktop\screamtowin\build\windows\x64\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\rizki\OneDrive\Desktop\screamtowin\build\windows\x64\runner\Release\record_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\rizki\OneDrive\Desktop\screamtowin\build\windows\x64\runner\Release\audioplayers_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\rizki\OneDrive\Desktop\screamtowin\build\windows\x64\runner\Release\screen_retriever_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\rizki\OneDrive\Desktop\screamtowin\build\windows\x64\runner\Release\window_manager_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\rizki\OneDrive\Desktop\screamtowin\build\windows\x64\runner\Release\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
